@@ -21,10 +21,10 @@ cursor.execute(sql)
 results = cursor.fetchall()
 dept_emp = [{'emp_no': row[0], 'dept_no': row[1]} for row in results]
 
-sql = "SELECT dept_no, emp_no FROM dept_manager"
+sql = "SELECT dept_no, emp_no, to_date FROM dept_manager"
 cursor.execute(sql)
 results = cursor.fetchall()
-dept_manager = [{'dept_no': row[0], 'manager_no': row[1]} for row in results]
+dept_manager = [{'dept_no': row[0], 'manager_no': row[1], 'to_date': row[2]} for row in results]
 
 tmp1_dict = {}
 for employee in employees:
@@ -56,10 +56,8 @@ dept_manager_dict = {}
 for manager in dept_manager:
     dept_no = manager['dept_no']
     manager_no = manager['manager_no']
-    if dept_no in dept_manager_dict:
-        if dept_manager_dict[dept_no] > manager_no:
-            dept_manager_dict[dept_no] = manager_no
-    else:
+    to_date = str(manager['to_date'])
+    if to_date == '9999-01-01' and dept_no not in dept_manager_dict:
         dept_manager_dict[dept_no] = manager_no
 
 for emp_data in tmp1_filtered:
